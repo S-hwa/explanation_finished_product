@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librarian Dashboard | LIBRA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="libra-data.js" defer></script>
+  <script src="dashboard.js" defer></script>
+</head>
+<body data-dashboard="librarian">
+  <a class="skip-link" href="#dashboardMain">Skip to content</a>
+  <aside class="sidebar" id="sidebar" aria-label="Librarian workspace">
+    <a class="sidebar-brand" href="LIBRA.html" aria-label="LIBRA home"><div class="seal">LIB</div><div><strong>LIBRA</strong><small>Librarian portal</small></div></a>
+    <p class="workspace-label">Library management</p>
+    <nav class="sidebar-nav" aria-label="Librarian dashboard navigation">
+      <a class="sidebar-link" href="#overview" data-view="overview" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Library overview</a>
+      <a class="sidebar-link" href="#traffic" data-view="traffic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M8 15v-4M13 15V6M18 15v-7"/></svg>Visitor traffic</a>
+      <a class="sidebar-link" href="#attendance" data-view="attendance"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 11h6M9 15h6"/></svg>Attendance log</a>
+      <a class="sidebar-link" href="#directory" data-view="directory"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M21 20v-2a6 6 0 0 0-4-5"/></svg>Student directory</a>
+      <a class="sidebar-link" href="#manual" data-view="manual"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5M4 20l4-1L20 7a2 2 0 0 0-3-3L5 16l-1 4M13 20h7"/></svg>Quick / manual entry</a>
+    </nav>
+    <div class="sidebar-note"><strong>Keep check-in moving.</strong>Use manual entry when the QR scanner is unavailable.</div>
+    <div class="sidebar-account">
+      <div class="account-row"><div class="avatar account-initials" aria-hidden="true">AR</div><div class="account-details"><strong class="account-name">Librarian</strong><small class="account-id">—</small></div></div>
+      <button type="button" class="sign-out" id="signOutButton"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H4v14h5M14 8l4 4-4 4M8 12h12"/></svg>Sign out</button>
+    </div>
+  </aside>
+  <button type="button" class="sidebar-backdrop" id="sidebarBackdrop" aria-label="Close navigation" tabindex="-1" hidden></button>
+  <div class="main-shell">
+    <header class="dashboard-topbar">
+      <button type="button" class="menu-button" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="topbar-title">CAVITE STATE UNIVERSITY<small>Library Integrated Booking and Registration Assistant</small></div>
+      <div class="topbar-meta"><time id="currentDate"></time><span class="badge badge-gold">Demo workspace</span></div>
+    </header>
+    <main class="workspace" id="dashboardMain" tabindex="-1">
+      <div class="page-heading"><div><div class="eyebrow">Librarian workspace</div><h1 id="viewTitle" tabindex="-1">Library overview</h1><p id="viewDescription">A clear view of your library day.</p></div><span class="badge badge-green" id="viewDate">Today</span></div>
+      <div class="notice error app-error" id="appError" role="alert" hidden></div>
+
+      <section class="view" id="overview" data-panel="overview" aria-labelledby="viewTitle">
+        <div class="welcome-banner"><div class="eyebrow">A smoother day at the library</div><h2>Hello, <span id="welcomeName">Ana</span>.</h2><p>Keep track of today’s visitors, find student accounts, and record library entries in one workspace.</p></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div><span class="stat-label">Today’s entries</span><strong class="stat-value" id="todayEntries">—</strong><small class="stat-note">QR and manual check-ins</small></div><div class="stat-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H4v14h5M14 8l4 4-4 4M8 12h12"/></svg></div></article>
+          <article class="stat-card"><div><span class="stat-label">Registered students</span><strong class="stat-value" id="registeredStudents">—</strong><small class="stat-note">Student accounts in the directory</small></div><div class="stat-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M21 20v-2a6 6 0 0 0-4-5"/></svg></div></article>
+          <article class="stat-card"><div><span class="stat-label">Peak hour today</span><strong class="stat-value compact" id="peakHour">—</strong><small class="stat-note" id="peakHourNote">No entries recorded yet</small></div><div class="stat-icon gold"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></article>
+        </div>
+        <div class="librarian-overview-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Latest check-ins</h2><p>The six most recent entries today.</p></div><span class="badge badge-green">Today</span></div><div class="table-wrap"><table><caption class="sr-only">Latest library check-ins today</caption><thead><tr><th scope="col">Student</th><th scope="col">Time</th><th scope="col">Entry</th></tr></thead><tbody id="librarianRecentEntries"></tbody></table></div></article>
+          <div class="stack">
+            <article class="panel"><div class="panel-heading"><h2>Entry methods</h2><span class="badge badge-neutral">Today</span></div><div class="method-row"><div class="method-label"><strong>QR check-in</strong><span id="qrEntryCount">0 entries</span></div><div class="progress-track"><div class="progress-fill" id="qrProgress" style="width:0%"></div></div></div><div class="method-row"><div class="method-label"><strong>Manual entry</strong><span id="manualEntryCount">0 entries</span></div><div class="progress-track"><div class="progress-fill gold" id="manualProgress" style="width:0%"></div></div></div></article>
+            <article class="panel soft-panel"><h3>Today at a glance</h3><div class="detail-row"><span>Unique visitors</span><strong id="uniqueVisitors">—</strong></div><div class="detail-row"><span>Library hours</span><strong>7 AM – 7 PM</strong></div><div class="detail-row"><span>Time zone</span><strong>Philippine time</strong></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="traffic" data-panel="traffic" aria-labelledby="viewTitle" hidden>
+        <div class="stats-grid"><article class="stat-card"><div><span class="stat-label">Entries today</span><strong class="stat-value" id="trafficTotal">—</strong><small class="stat-note">Across all 24 hours</small></div></article><article class="stat-card"><div><span class="stat-label">Unique visitors</span><strong class="stat-value" id="trafficUnique">—</strong><small class="stat-note">Individual students today</small></div></article><article class="stat-card"><div><span class="stat-label">Busiest hour</span><strong class="stat-value compact" id="trafficPeak">—</strong><small class="stat-note" id="trafficPeakCount">No entries recorded yet</small></div></article></div>
+        <article class="panel">
+          <div class="panel-heading"><div><h2>Visitor traffic by hour</h2><p>Today’s library entries, from midnight to 11 PM.</p></div><span class="badge badge-green" id="trafficDate">Today</span></div>
+          <div class="chart-scroll" id="trafficChart"></div>
+          <div class="chart-footer"><div class="chart-legend"><span><i class="legend-dot"></i>Entries</span><span><i class="legend-dot gold"></i>Peak hour</span></div><span id="trafficReadout" role="status">Point to an hour to see its entry count.</span></div>
+        </article>
+        <article class="panel"><div class="panel-heading"><div><h2>Hourly breakdown</h2><p>Entry counts in Philippine time (UTC+8).</p></div></div><div class="hourly-grid" id="hourlyBreakdown"></div></article>
+      </section>
+
+      <section class="view" id="attendance" data-panel="attendance" aria-labelledby="viewTitle" hidden>
+        <article class="panel">
+          <div class="panel-heading"><div><h2>Library attendance</h2><p>Search entries by student, program, or date.</p></div><span class="badge badge-green" id="attendanceCount">0 entries</span></div>
+          <div class="filters"><div class="field search-field"><label for="attendanceSearch">Search student</label><input id="attendanceSearch" type="search" placeholder="Name or student number" maxlength="80" /></div><div class="field filter-field"><label for="attendanceDate">Date (clear for all)</label><input id="attendanceDate" type="date" /></div><div class="field filter-program"><label for="attendanceProgram">Program</label><select id="attendanceProgram"><option value="">All programs</option></select></div></div>
+          <div class="table-wrap"><table><caption class="sr-only">Student library attendance log</caption><thead><tr><th scope="col">Student</th><th scope="col">Student No.</th><th scope="col">Program</th><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Entry</th></tr></thead><tbody id="attendanceRows"></tbody></table></div>
+          <div class="pagination"><small id="attendancePageInfo">No entries</small><div class="pagination-buttons"><button type="button" class="btn btn-outline btn-small" id="attendancePrev">Previous</button><button type="button" class="btn btn-outline btn-small" id="attendanceNext">Next</button></div></div>
+        </article>
+      </section>
+
+      <section class="view" id="directory" data-panel="directory" aria-labelledby="viewTitle" hidden>
+        <article class="panel">
+          <div class="panel-heading"><div><h2>Registered accounts</h2><p>Student details and their one-time profile update status.</p></div><span class="badge badge-green" id="directoryCount">0 students</span></div>
+          <div class="filters"><div class="field search-field"><label for="directorySearch">Search student</label><input id="directorySearch" type="search" placeholder="Name or student number" maxlength="80" /></div><div class="field filter-program"><label for="directoryProgram">Program</label><select id="directoryProgram"><option value="">All programs</option></select></div></div>
+          <div class="table-wrap"><table><caption class="sr-only">Registered student account directory</caption><thead><tr><th scope="col">Name</th><th scope="col">Student No.</th><th scope="col">Program</th><th scope="col">Email</th><th scope="col">Profile update</th></tr></thead><tbody id="directoryRows"></tbody></table></div>
+          <div class="pagination"><small id="directoryPageInfo">No students</small><div class="pagination-buttons"><button type="button" class="btn btn-outline btn-small" id="directoryPrev">Previous</button><button type="button" class="btn btn-outline btn-small" id="directoryNext">Next</button></div></div>
+        </article>
+      </section>
+
+      <section class="view" id="manual" data-panel="manual" aria-labelledby="viewTitle" hidden>
+        <div class="manual-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><h2>Record a library entry</h2><p>Use this when the QR scanner is unavailable.</p></div><span class="badge badge-gold">Manual</span></div>
+            <form class="manual-form" id="manualEntryForm">
+              <div class="field"><label for="manualStudentNumber">Student number</label><input id="manualStudentNumber" name="studentNumber" placeholder="e.g. 2026-0001" maxlength="20" autocomplete="off" required /><small>Sample student: 2026-0001</small></div>
+              <div class="student-preview" id="manualStudentPreview" hidden><div class="avatar" id="previewInitials" aria-hidden="true"></div><div><strong id="previewName"></strong><small id="previewStudentNumber"></small><small id="previewProgram"></small></div></div>
+              <div class="notice" id="manualLookupMessage" role="status" hidden></div>
+              <div class="manual-instructions"><h3>Confirm, then record.</h3><p>Check the student’s name and program. Their entry will be recorded with today’s date and the current time.</p></div>
+              <div class="notice" id="manualEntryMessage" role="status" hidden></div>
+              <div class="form-actions"><button type="submit" class="btn btn-primary" id="manualSubmit" disabled>Record entry</button></div>
+            </form>
+          </article>
+          <article class="panel"><div class="panel-heading"><div><h2>Recent manual entries</h2><p>The five latest manual entries today.</p></div></div><div class="table-wrap"><table><caption class="sr-only">Recent manual library entries today</caption><thead><tr><th scope="col">Student</th><th scope="col">Time</th></tr></thead><tbody id="manualRecentRows"></tbody></table></div></article>
+        </div>
+      </section>
+      <footer class="workspace-footer"><span>© <span class="current-year">2026</span> LIBRA Project · CvSU Library</span><span>Sample data · Librarian workspace</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

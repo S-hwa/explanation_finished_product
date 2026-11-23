@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard | LIBRA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="libra-data.js" defer></script>
+  <script src="dashboard.js" defer></script>
+</head>
+<body data-dashboard="student">
+  <a class="skip-link" href="#dashboardMain">Skip to content</a>
+  <aside class="sidebar" id="sidebar" aria-label="Student workspace">
+    <a class="sidebar-brand" href="LIBRA.html" aria-label="LIBRA home">
+      <div class="seal">LIB</div>
+      <div><strong>LIBRA</strong><small>Student portal</small></div>
+    </a>
+    <p class="workspace-label">Your library</p>
+    <nav class="sidebar-nav" aria-label="Student dashboard navigation">
+      <a class="sidebar-link" href="#overview" data-view="overview" aria-current="page">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Overview
+      </a>
+      <a class="sidebar-link" href="#history" data-view="history">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.5 7.2M3 4v7h7"/><path d="M12 7v5l3 2"/></svg>
+        Visit history
+      </a>
+      <a class="sidebar-link" href="#profile" data-view="profile">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+        Profile settings
+      </a>
+    </nav>
+    <div class="sidebar-note"><strong>A little less waiting.</strong>Keep your student QR ready for your next visit to the library.</div>
+    <div class="sidebar-account">
+      <div class="account-row">
+        <div class="avatar account-initials" aria-hidden="true">MS</div>
+        <div class="account-details"><strong class="account-name">Student</strong><small class="account-id">—</small></div>
+      </div>
+      <button class="sign-out" type="button" id="signOutButton">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H4v14h5M14 8l4 4-4 4M8 12h12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+  <button type="button" class="sidebar-backdrop" id="sidebarBackdrop" aria-label="Close navigation" tabindex="-1" hidden></button>
+  <div class="main-shell">
+    <header class="dashboard-topbar">
+      <button type="button" class="menu-button" id="sidebarToggle" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar-title">CAVITE STATE UNIVERSITY<small>Library Integrated Booking and Registration Assistant</small></div>
+      <div class="topbar-meta"><time id="currentDate"></time><span class="badge badge-gold">Demo workspace</span></div>
+    </header>
+    <main class="workspace" id="dashboardMain" tabindex="-1">
+      <div class="page-heading">
+        <div><div class="eyebrow">Student workspace</div><h1 id="viewTitle" tabindex="-1">Overview</h1><p id="viewDescription">Your library access, in one place.</p></div>
+        <span class="badge badge-green">Student account</span>
+      </div>
+      <div class="notice error app-error" id="appError" role="alert" hidden></div>
+
+      <section class="view" id="overview" data-panel="overview" aria-labelledby="viewTitle">
+        <div class="welcome-banner">
+          <div class="eyebrow">Your digital library companion</div>
+          <h2>Welcome back, <span id="welcomeName">Maria</span>.</h2>
+          <p>More time for learning. Less time in line. Your student QR and library visits are right here.</p>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div><span class="stat-label">Total visits</span><strong class="stat-value" id="studentTotalVisits">—</strong><small class="stat-note">All recorded library entries</small></div><div class="stat-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v16H4zM13 4h7v16h-7M7 8h1M16 8h1"/></svg></div></article>
+          <article class="stat-card"><div><span class="stat-label">This month</span><strong class="stat-value" id="studentMonthVisits">—</strong><small class="stat-note" id="studentMonthLabel">Library visits this month</small></div><div class="stat-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h2M14 14h2"/></svg></div></article>
+          <article class="stat-card"><div><span class="stat-label">Last visit</span><strong class="stat-value compact" id="studentLastVisit">—</strong><small class="stat-note" id="studentLastTime">No visit recorded yet</small></div><div class="stat-icon gold"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></article>
+        </div>
+        <div class="overview-grid">
+          <article class="panel qr-panel">
+            <div class="panel-heading"><h2>Your student QR</h2><span class="badge badge-gold">Sample QR</span></div>
+            <div class="qr-frame"><img src="sample-qr.svg" width="220" height="220" alt="Sample QR artwork for preview only; it does not contain student information." /></div>
+            <p class="qr-number account-id">—</p><p class="qr-name account-name">Student</p><span class="badge badge-green account-program">—</span>
+            <hr class="qr-divider" />
+            <p class="qr-caption">Sample QR for preview only. Please use your official student QR for library entry.</p>
+          </article>
+          <div class="stack">
+            <article class="panel">
+              <div class="panel-heading"><div><h2>Recent visits</h2><p>Your three most recent library entries.</p></div></div>
+              <div class="table-wrap"><table><caption class="sr-only">Recent student library visits</caption><thead><tr><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Entry</th></tr></thead><tbody id="studentRecentVisits"></tbody></table></div>
+            </article>
+            <article class="panel soft-panel">
+              <h3>Ready for your next visit?</h3>
+              <ol class="reminder-list"><li><span class="reminder-number">1</span>Have your student QR ready before entering.</li><li><span class="reminder-number">2</span>Present it at the library scanning station.</li><li><span class="reminder-number">3</span>If the scanner is unavailable, ask the librarian for a manual entry.</li></ol>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="history" data-panel="history" aria-labelledby="viewTitle" hidden>
+        <article class="panel">
+          <div class="panel-heading"><div><h2>Recorded visits</h2><p>Every check-in, including entries recorded by a librarian.</p></div><span class="badge badge-green" id="historyCount">0 visits</span></div>
+          <div class="filters">
+            <div class="field filter-field"><label for="historyFrom">From date</label><input type="date" id="historyFrom" /></div>
+            <div class="field filter-field"><label for="historyTo">To date</label><input type="date" id="historyTo" /></div>
+            <div class="field filter-field"><label for="historyMethod">Entry method</label><select id="historyMethod"><option value="">All entries</option><option value="QR">QR</option><option value="Manual">Manual</option></select></div>
+          </div>
+          <div class="notice error" id="historyMessage" role="status" hidden></div>
+          <div class="table-wrap"><table><caption class="sr-only">Student visit history</caption><thead><tr><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Entry method</th><th scope="col">Status</th></tr></thead><tbody id="studentHistoryRows"></tbody></table></div>
+          <div class="pagination"><small id="historyPageInfo">No visits</small><div class="pagination-buttons"><button type="button" class="btn btn-outline btn-small" id="historyPrev">Previous</button><button type="button" class="btn btn-outline btn-small" id="historyNext">Next</button></div></div>
+        </article>
+      </section>
+
+      <section class="view" id="profile" data-panel="profile" aria-labelledby="viewTitle" hidden>
+        <div class="profile-grid">
+          <article class="panel">
+            <div class="panel-heading"><h2>Account details</h2><span class="badge badge-gold" id="profileUpdateBadge">1 update available</span></div>
+            <form class="profile-form" id="profileForm">
+              <div class="notice" id="profileRule"><strong>You can update your profile once.</strong>Review your name, program, and email carefully. Your details become read-only after saving.</div>
+              <div class="profile-fields">
+                <div class="field full-width"><label for="profileStudentNumber">Student number</label><input id="profileStudentNumber" readonly /><small>Your student number stays the same.</small></div>
+                <div class="field full-width"><label for="profileName">Full name</label><input id="profileName" name="name" autocomplete="name" minlength="2" maxlength="80" required data-profile-field /></div>
+                <div class="field full-width"><label for="profileProgram">Program</label><select id="profileProgram" name="program" required data-profile-field></select></div>
+                <div class="field full-width"><label for="profileEmail">Email address</label><input id="profileEmail" name="email" type="email" autocomplete="email" maxlength="120" required data-profile-field /></div>
+              </div>
+              <label class="agreement" id="profileAgreementLabel"><input type="checkbox" id="profileAgreement" required /><span>I have checked my details and understand I can save profile changes only once.</span></label>
+              <div class="notice" id="profileMessage" role="status" hidden></div>
+              <div class="form-actions" id="profileActions"><button type="submit" class="btn btn-primary" id="profileSaveButton">Save profile</button></div>
+            </form>
+          </article>
+          <div class="stack">
+            <article class="panel profile-summary">
+              <div class="avatar large-avatar account-initials" aria-hidden="true">MS</div>
+              <h2 class="account-name">Student</h2><p class="account-program">—</p><span class="badge badge-green">Registered student</span>
+              <div style="margin-top:20px"><div class="detail-row"><span>Student number</span><strong class="account-id">—</strong></div><div class="detail-row"><span>Email</span><strong class="account-email">—</strong></div><div class="detail-row"><span>Profile update</span><strong id="profileStatus">Available</strong></div></div>
+            </article>
+            <article class="panel soft-panel"><h3>One profile, one update.</h3><p>Your saved details also appear in the librarian’s student directory. Check that everything is correct before you save.</p></article>
+          </div>
+        </div>
+      </section>
+      <footer class="workspace-footer"><span>© <span class="current-year">2026</span> LIBRA Project · CvSU Library</span><span>Sample data · Student workspace</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

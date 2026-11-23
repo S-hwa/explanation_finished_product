@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIBRA | CvSU Library Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #176b3a;
+      --green-dark: #10532c;
+      --green-soft: #eaf4ed;
+      --gold: #f4c542;
+      --ink: #1d2a22;
+      --muted: #68756d;
+      --line: #e3eae5;
+      --surface: #ffffff;
+      --background: #f5f8f5;
+      --shadow: 0 12px 35px rgba(24, 65, 39, .09);
+      --header-height: 80px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    section[id] { scroll-margin-top: calc(var(--header-height) + 16px); }
+    body {
+      margin: 0;
+      font-family: 'Manrope', 'Segoe UI', sans-serif;
+      color: var(--ink);
+      background: var(--background);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    section[tabindex="-1"]:focus { outline: none; }
+    .topbar {
+      background: var(--green-dark);
+      color: white;
+      padding: 8px 5.5%;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    header {
+      background: white;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .nav-wrap {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 220px; }
+    .seal {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: var(--green); color: white;
+      display: grid; place-items: center; font-weight: 800;
+      border: 3px solid #d9e9dd; letter-spacing: -1px;
+    }
+    .brand strong { display: block; color: var(--green-dark); font-size: 15px; }
+    .brand small { display: block; color: var(--muted); font-size: 10px; letter-spacing: .5px; }
+    nav { display: flex; align-items: center; gap: 24px; font-size: 13px; font-weight: 600; }
+    nav a { padding: 7px 0; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .2s, border-color .2s; }
+    nav a:hover, nav a[aria-current="location"] { color: var(--green); border-bottom-color: var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 9px; }
+    .btn {
+      border: 0; border-radius: 7px; padding: 11px 17px;
+      font-weight: 700; font-size: 13px; transition: .2s;
+    }
+    .btn-primary { background: var(--green); color: white; }
+    .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-outline { color: var(--green); background: white; border: 1px solid var(--green); }
+    .menu-toggle { display: none; width: 40px; height: 40px; padding: 0; background: transparent; color: var(--green-dark); border: 0; border-radius: 7px; font-size: 24px; }
+    .hero {
+      background: linear-gradient(100deg, rgba(10, 55, 29, .92), rgba(15, 85, 43, .77)),
+        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1800&q=85') center/cover;
+      color: white;
+      min-height: 410px;
+      display: flex; align-items: center;
+    }
+    .hero-inner { max-width: 1200px; width: 100%; margin: auto; padding: 65px 24px; }
+    .eyebrow { color: #d9efdf; text-transform: uppercase; letter-spacing: 2px; font-size: 11px; font-weight: 800; }
+    h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.08; max-width: 650px; margin: 14px 0; }
+    .hero p { max-width: 580px; color: #edf6ef; font-size: 16px; }
+    .container { max-width: 1200px; padding: 0 24px; margin: auto; }
+    .panel, .feature-card, .announcement {
+      background: white; border: 1px solid var(--line); border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    section.content-section { padding: 70px 0 10px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+    .section-heading h2 { margin: 0; font-size: 27px; color: var(--green-dark); }
+    .section-heading p { color: var(--muted); margin: 5px 0 0; font-size: 13px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature-card { padding: 24px; box-shadow: none; }
+    .feature-card .symbol { font-size: 27px; margin-bottom: 12px; }
+    .feature-card h3 { margin: 0 0 7px; font-size: 16px; }
+    .feature-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .two-col { display: grid; grid-template-columns: 1.15fr .85fr; gap: 20px; }
+    .panel { padding: 24px; box-shadow: none; }
+    .panel h3 { margin: 0 0 14px; color: var(--green-dark); }
+    .announcement { padding: 15px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+    .announcement:last-child { border-bottom: 0; }
+    .date-tag { color: var(--green); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+    .announcement strong { display: block; margin: 4px 0; font-size: 14px; }
+    .announcement p { margin: 0; color: var(--muted); font-size: 12px; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .step { background: white; border: 1px solid var(--line); border-radius: 11px; padding: 19px; }
+    .step-number { width: 29px; height: 29px; border-radius: 50%; background: var(--green); color: white; display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+    .step h4 { margin: 12px 0 5px; font-size: 14px; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; }
+    footer { margin-top: 75px; padding: 35px 24px; background: #103e24; color: white; }
+    .footer-inner { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    footer p { color: #d6e7da; font-size: 12px; margin: 6px 0; }
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.48);
+      z-index: 50; align-items: center; justify-content: center; padding: 18px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal { background: white; width: min(430px, 100%); max-height: calc(100dvh - 36px); overflow-y: auto; border-radius: 14px; padding: 27px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .modal h2 { margin: 0 0 5px; color: var(--green-dark); }
+    .modal .sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+    .login-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 4px; margin-bottom: 18px; background: var(--green-soft); border-radius: 9px; }
+    .login-tab { padding: 10px 8px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 700; transition: color .2s, background .2s; }
+    .login-tab:hover { color: var(--green-dark); }
+    .login-tab[aria-selected="true"] { background: white; color: var(--green-dark); box-shadow: 0 2px 6px rgba(24, 65, 39, .08); }
+    label { display: block; font-size: 12px; font-weight: 700; margin: 13px 0 6px; }
+    input { width: 100%; padding: 12px; border: 1px solid #d5dfd8; border-radius: 7px; outline: none; }
+    input:focus { border-color: var(--green); box-shadow: 0 0 0 3px #176b3a18; }
+    .modal-actions { display: flex; gap: 9px; margin-top: 18px; }
+    .modal-actions button { flex: 1; }
+    .notice { display: none; background: var(--green-soft); color: var(--green-dark); padding: 11px; border-radius: 7px; font-size: 12px; margin-top: 13px; }
+    .notice.show { display: block; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, nav a, .login-tab { transition: none; }
+    }
+    @media (max-width: 960px) {
+      nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 18px 24px; gap: 12px; flex-direction: column; align-items: stretch; border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
+      nav.open { display: flex; }
+      .menu-toggle { display: block; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .topbar { justify-content: center; text-align: center; }
+      .brand { min-width: 0; }
+      .brand small { display: none; }
+      .seal { width: 41px; height: 41px; }
+      .nav-wrap { padding: 12px 16px; gap: 12px; }
+      .nav-actions { gap: 8px; }
+      .nav-actions .btn { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+      .hero { min-height: 380px; }
+      .hero-inner { padding: 55px 20px; }
+      .feature-grid, .two-col, .steps { grid-template-columns: 1fr; }
+      section.content-section { padding-top: 48px; }
+      .section-heading { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span> CAVITE STATE UNIVERSITY • LIBRARY SERVICES</span>
+    <span>Learning Resource Center | Student Portal</span>
+  </div>
+
+  <header>
+    <div class="nav-wrap">
+      <a class="brand" href="#home" aria-label="LIBRA home">
+        <div class="seal">LIB</div>
+        <div>
+          <strong>LIBRA</strong>
+          <small>LIBRARY INTEGRATED BOOKING AND REGISTRATION ASSISTANT</small>
+        </div>
+      </a>
+
+      <nav id="mainNav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#announcements">Updates</a>
+        <a href="#how">How it works</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" id="loginButton" class="btn btn-primary" onclick="openLogin()">Access LIBRA</button>
+        <button type="button" id="menuToggle" class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" tabindex="-1">
+      <div class="hero-inner">
+        <div class="eyebrow">Your digital library access portal</div>
+        <h1>Welcome to <span style="color:#f4d36e">LIBRA</span></h1>
+        <p>A simpler and more organized way to register your library visits. Access your student QR code and make your library check-in faster and easier.</p>
+      </div>
+    </section>
+
+    <section class="content-section" id="about" tabindex="-1">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>About LIBRA</h2>
+            <p>Making library registration more convenient for every student.</p>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <h3>What is LIBRA?</h3>
+            <p style="font-size:14px;color:#68756d;margin-bottom:0">LIBRA (Library Integrated Booking and Registration Assistant) is a proposed web-based library attendance and visitor management system. It uses student registration and unique QR codes to help simplify library entry and reduce manual registration queues.</p>
+          </div>
+          <div class="panel" style="background:#eaf4ed">
+            <h3 style="margin-bottom:8px">Our goal</h3>
+            <p style="font-size:14px;color:#496454;margin:0">A faster check-in process, organized attendance records, and a more convenient library experience for students and library personnel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="services" tabindex="-1">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>Library Services</h2>
+            <p>Explore the digital services available through the LIBRA portal.</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="symbol">▦</div><h3>Student QR Registration</h3><p>Sign in to your student account and access your personal QR code for library entry.</p></article>
+          <article class="feature-card"><div class="symbol">◷</div><h3>Visit Attendance</h3><p>Keep track of your recorded library visits and check-in history.</p></article>
+          <article class="feature-card"><div class="symbol">▣</div><h3>Library Information</h3><p>Find library reminders, service information, and important announcements.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="announcements" tabindex="-1">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>Announcements & Updates</h2>
+            <p>Important reminders from the library.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="announcement">
+            <span class="date-tag">Library reminder</span>
+            <strong>Keep your student QR code ready</strong>
+            <p>Students should access their personal QR code before proceeding to the designated scanning station.</p>
+          </div>
+          <div class="announcement">
+            <span class="date-tag">System update</span>
+            <strong>LIBRA student portal</strong>
+            <p>Use the student portal to access your account and view your library visit information.</p>
+          </div>
+          <div class="announcement">
+            <span class="date-tag">Important</span>
+            <strong>Follow library guidelines</strong>
+            <p>Please observe library rules and cooperate with library personnel during check-in.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="how" tabindex="-1">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>How LIBRA Works</h2>
+            <p>Four simple steps to record your library visit.</p>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-number">1</div><h4>Student Login</h4><p>Access the LIBRA portal using your registered student credentials.</p></div>
+          <div class="step"><div class="step-number">2</div><h4>Get Your QR Code</h4><p>View the unique QR code connected to your student account.</p></div>
+          <div class="step"><div class="step-number">3</div><h4>Scan at the Library</h4><p>Present your QR code at the designated library scanning station.</p></div>
+          <div class="step"><div class="step-number">4</div><h4>Successful Check-in</h4><p>The system verifies the code and records your library entry.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <strong style="font-size:19px">LIBRA</strong>
+        <p>Library Integrated Booking and Registration Assistant</p>
+        <p>A proposed academic project prototype.</p>
+      </div>
+      <div>
+        <p>© 2026 LIBRA Project</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal">
+      <h2 id="loginTitle">Login to LIBRA</h2>
+      <p class="sub" id="loginDescription">Sign in to access your LIBRA student portal.</p>
+      <div class="login-tabs" role="tablist" aria-label="Login type">
+        <button type="button" class="login-tab" id="studentLoginTab" role="tab" data-login-role="student" aria-selected="true" aria-controls="studentLoginPanel" tabindex="0">Student Login</button>
+        <button type="button" class="login-tab" id="librarianLoginTab" role="tab" data-login-role="librarian" aria-selected="false" aria-controls="librarianLoginPanel" tabindex="-1">Librarian Login</button>
+      </div>
+      <form id="loginForm">
+        <input type="hidden" id="loginRole" name="loginRole" value="student" />
+        <div id="studentLoginPanel" role="tabpanel" aria-labelledby="studentLoginTab">
+          <label for="studentNumber">Student Number</label>
+          <input id="studentNumber" name="studentNumber" autocomplete="username" placeholder="Enter your student number" required />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+        </div>
+        <div id="librarianLoginPanel" role="tabpanel" aria-labelledby="librarianLoginTab" hidden>
+          <label for="librarianId">Librarian ID</label>
+          <input id="librarianId" name="librarianId" autocomplete="username" placeholder="Enter your librarian ID" required disabled />
+          <label for="librarianPassword">Password</label>
+          <input id="librarianPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required disabled />
+        </div>
+        <div class="notice" id="loginNotice" role="status">This is a front-end demonstration only. Login authentication is not connected yet.</div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeLogin()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('loginModal');
+    const notice = document.getElementById('loginNotice');
+    const loginForm = document.getElementById('loginForm');
+    const loginRole = document.getElementById('loginRole');
+    const loginTabs = Array.from(document.querySelectorAll('[data-login-role]'));
+    const header = document.querySelector('header');
+    const nav = document.getElementById('mainNav');
+    const menuToggle = document.getElementById('menuToggle');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let scrollFrame = null;
+
+    function setMenuOpen(open) {
+      nav.classList.toggle('open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    function updateHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+      if (window.innerWidth > 960) setMenuOpen(false);
+    }
+    updateHeaderHeight();
+    new ResizeObserver(updateHeaderHeight).observe(header);
+    window.addEventListener('resize', updateHeaderHeight);
+
+    function stopScroll() {
+      cancelAnimationFrame(scrollFrame);
+      scrollFrame = null;
+    }
+
+    function scrollToSection(target) {
+      stopScroll();
+      const start = window.scrollY;
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const destination = Math.min(maxScroll, Math.max(0,
+        target.getBoundingClientRect().top + start - header.offsetHeight - 16));
+      const distance = destination - start;
+
+      if (reducedMotion.matches || Math.abs(distance) < 1) {
+        window.scrollTo({ top: destination, behavior: 'instant' });
+        target.focus({ preventScroll: true });
+        return;
+      }
+
+      // Animate explicitly so fragment navigation cannot jump straight to the target.
+      const duration = 600;
+      let startedAt;
+      function animateScroll(timestamp) {
+        if (startedAt === undefined) startedAt = timestamp;
+        const progress = Math.min((timestamp - startedAt) / duration, 1);
+        const eased = progress < .5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2;
+        window.scrollTo({ top: start + distance * eased, behavior: 'instant' });
+        if (progress < 1) {
+          scrollFrame = requestAnimationFrame(animateScroll);
+        } else {
+          scrollFrame = null;
+          target.focus({ preventScroll: true });
+        }
+      }
+      scrollFrame = requestAnimationFrame(animateScroll);
+    }
+
+    function updateCurrentLink() {
+      nav.querySelectorAll('a').forEach(link => {
+        if (link.hash === window.location.hash) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', event => {
+        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const target = document.getElementById(link.hash.slice(1));
+        if (!target) return;
+        event.preventDefault();
+        setMenuOpen(false);
+        if (window.location.hash !== link.hash) history.pushState(null, '', link.hash);
+        updateCurrentLink();
+        scrollToSection(target);
+      });
+    });
+    updateCurrentLink();
+    window.addEventListener('hashchange', updateCurrentLink);
+    window.addEventListener('popstate', stopScroll);
+    window.addEventListener('wheel', stopScroll, { passive: true });
+    window.addEventListener('touchstart', stopScroll, { passive: true });
+    document.addEventListener('keydown', event => {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) stopScroll();
+      if (event.key === 'Escape') {
+        if (modal.classList.contains('show')) closeLogin();
+        else if (nav.classList.contains('open')) {
+          setMenuOpen(false);
+          menuToggle.focus();
+        }
+      }
+    });
+
+    function selectLoginRole(role) {
+      loginRole.value = role;
+      loginTabs.forEach(tab => {
+        const selected = tab.dataset.loginRole === role;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        const panel = document.getElementById(tab.getAttribute('aria-controls'));
+        panel.hidden = !selected;
+        // Inactive credentials must not participate in validation or submission.
+        panel.querySelectorAll('input').forEach(input => { input.disabled = !selected; });
+      });
+      document.getElementById('loginDescription').textContent = `Sign in to access your LIBRA ${role} portal.`;
+      notice.classList.remove('show');
+    }
+
+    loginTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectLoginRole(tab.dataset.loginRole));
+      tab.addEventListener('keydown', event => {
+        let nextIndex;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % loginTabs.length;
+        else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + loginTabs.length) % loginTabs.length;
+        else if (event.key === 'Home') nextIndex = 0;
+        else if (event.key === 'End') nextIndex = loginTabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectLoginRole(loginTabs[nextIndex].dataset.loginRole);
+        loginTabs[nextIndex].focus({ preventScroll: true });
+      });
+    });
+
+    function openLogin() {
+      stopScroll();
+      setMenuOpen(false);
+      selectLoginRole('student');
+      modal.classList.add('show');
+      document.getElementById('studentNumber').focus();
+    }
+    function closeLogin() {
+      modal.classList.remove('show');
+      loginForm.reset();
+      selectLoginRole('student');
+      document.getElementById('loginButton').focus({ preventScroll: true });
+    }
+    function toggleMenu() {
+      setMenuOpen(!nav.classList.contains('open'));
+    }
+    modal.addEventListener('click', function(event) {
+      if (event.target === modal) closeLogin();
+    });
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      notice.textContent = `This is a front-end demonstration only. ${loginRole.value === 'librarian' ? 'Librarian' : 'Student'} authentication is not connected yet.`;
+      notice.classList.add('show');
+    });
+  </script>
+</body>
+</html>
